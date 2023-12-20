@@ -27,19 +27,22 @@ class PlanarMap:
     def update_name(self, map_name):
         self.map_name = map_name
     
-    def add_box_xy(self, xmin, ymin, size):
-        xmax = xmin + size[0]
-        ymax = ymin + size[1]
-        xmin_indx, xmax_indx = int(xmin // self.cell_size), int(xmax // self.cell_size)
-        ymin_indx, ymax_indx = int(ymin // self.cell_size), int(ymax // self.cell_size)
+    ## The input coordinate (x, y) follows the conventional right-hand coordinate system definitions,
+    #  the bottom-left of a field matrix is the origin. Notice that in the PlanarSDF class definitions, 
+    #  the directions are inversed and needs a transform from the RH to the field data matrix.
+    def add_box_xy(self, xmin, ymin, shape):
+        xmax = xmin + shape[0]
+        ymax = ymin + shape[1]
+        xmin_indx, xmax_indx = int(xmin / self.cell_size), int(xmax / self.cell_size)
+        ymin_indx, ymax_indx = int(ymin / self.cell_size), int(ymax / self.cell_size)
         
-        self.map[xmin_indx:xmax_indx, ymin_indx:ymax_indx] = 1.0
+        self.map[ymin_indx:ymax_indx, xmin_indx:xmax_indx] = 1.0
         
         self.generate_SDField()
 
-    def add_box_index(self, xmin, ymin, size):
-        xmax = xmin + size[0]
-        ymax = ymin + size[1]
+    def add_box_index(self, xmin, ymin, shape):
+        xmax = xmin + shape[0]
+        ymax = ymin + shape[1]
         self.map[xmin:xmax, ymin:ymax] = 1.0
         self.generate_SDField()
         
@@ -56,10 +59,12 @@ class PlanarMap:
     def get_map(self):
         return self.map
     
+    def get_field(self):
+        return self.field
     
-def generate_map(map_name, save_map=False):
-    origin = np.array([0.0, 0.0])
-    cell_size = 0.1
+    
+def generate_field(map_name, cell_size, save_map=False):
+    origin = np.array([0.0, 0.0], dtype=np.float64)
     width = 500
     height = 500
     
@@ -74,14 +79,14 @@ def generate_map(map_name, save_map=False):
         m.save_map(planarmap_dir + '/' + map_name + '.csv', 
                    planarmap_dir + '/' + map_name + '_field' + '.csv')
     
-    return m.get_map()
+    return m.get_field()
 
 
 def generate_2dsdf(map_name="SingleObstacleMap", savemap=False):
-    origin = np.array([0.0, 0.0], dtype=np.float32)
+    origin = np.array([0.0, 0.0], dtype=np.float64)
     cell_size = 0.1
-    data = generate_map(map_name, savemap)
+    field_data = generate_field(map_name, cell_size, savemap)
     
-    planar_sdf = libplanar_sdf.PlanarSDF(origin, cell_size, data)
+    planar_sdf = libplanar_sdf.PlanarSDF(origin, cell_size, field_data)
 
     return planar_sdf

@@ -57,10 +57,7 @@ public:
   /// give a point, search for signed distance field and (optional) gradient
   /// return signed distance
   inline double getSignedDistance(const Eigen::Vector2d& point) const {
-    std::cout << "point c++ " << std::endl << point[0] << ", " << point[1] << std::endl;
     const float_index pidx = convertPoint2toCell(point);
-    std::cout << "pidx " << std::endl << std::get<0>(pidx) << ", " << std::get<1>(pidx) << std::endl;
-    std::cout << "signed_distance(pidx) c++" << std::endl << signed_distance(pidx) << std::endl;
     return signed_distance(pidx);
   }
 
