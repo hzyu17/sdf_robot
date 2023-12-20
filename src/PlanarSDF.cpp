@@ -3,7 +3,6 @@
  *  @brief Re-definition of signed distance class
  *         https://github.com/gtrll/gpmp2/blob/main/gpmp2/obstacle/PlanarSDF.h
  *         Removed Boost dependency for convinence in python wrapping.
- *  @author Hongzhe Yu
  *  @date  Dec 19, 2023
  **/
 

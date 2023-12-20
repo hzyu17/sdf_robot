@@ -2,7 +2,7 @@
 Stand-alone python wrap of signed distance field and collision cost implementations for applications in robotics.
 
 ## Dependencies
-**[Eigen 3.4.0](https://gitlab.com/libeigen/eigen/-/releases/3.4.0)**, **[Pybind11](https://github.com/pybind/pybind11)** ,numpy, plotly.
+**[Eigen 3.4.0](https://gitlab.com/libeigen/eigen/-/releases/3.4.0)**, **[Pybind11](https://github.com/pybind/pybind11)** ,numpy, scipy, plotly.
 
 ## Build shared library
 ```
