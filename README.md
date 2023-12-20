@@ -1,9 +1,16 @@
 ## A simple Signed Distance Field(SDF) for use in robotics 
-
-![example workflow](https://github.com/github/docs/actions/workflows/main.yml/badge.svg)
+Stand-alone python wrap of signed distance field and collision cost implementations for applications in robotics.
 
 ## Dependencies
-**[Eigen 3.4.0](https://gitlab.com/libeigen/eigen/-/releases/3.4.0)**, **[Pybind11](https://github.com/pybind/pybind11)** ,numpy, plotly.
+**[Eigen 3.4.0](https://gitlab.com/libeigen/eigen/-/releases/3.4.0)**, **[Pybind11](https://github.com/pybind/pybind11)** ,numpy, scipy, plotly.
 
+## Build shared library
+```
+git clone https://github.com/hzyu17/sdf_robot.git
+cd sdf_robot
+mkdir build && cd build
+cmake ..
+make
+```
 ## Examples
 
