@@ -1,24 +1,9 @@
 ## Collision costs definitions and their derivatives using a SDF
 # Hongzhe Yu, 12/19/2023
 
-import sys
-import os
-current_dir = os.getcwd()
-root_dir = os.path.abspath(os.path.join(current_dir, '..'))
-build_dir = os.path.abspath(os.path.join(root_dir, 'build'))
-src_dir = os.path.abspath(os.path.join(root_dir, 'src'))
-planarmap_dir = os.path.abspath(os.path.join(os.path.join(root_dir, 'map'),'planar'))
-
-print("build_dir")
-print(build_dir)
-
-sys.path.append(build_dir)
-sys.path.append(planarmap_dir)
-
-import libplanar_sdf
 import numpy as np
 import plotly.graph_objects as go
-from generate_map import *
+from scripts.generate_sdf_2d import *
 
 # hinge(dist), (\par h)/(\par dist)
 def hinge_loss_gradient(dist, eps_obs, slope=1):
@@ -52,24 +37,4 @@ def collision_cost_gradient(sig_obs, vec_pts, sdf_2d, eps_obs, slope=1):
     g_vec_pts = 2*Sig_obs@vec_hinge@g_vec_hinge
     
     return collision_cost, g_vec_pts
-    
-    
-def generate_2dsdf(map_name):
-    origin = np.array([0.0, 0.0], dtype=np.float32)
-    cell_size = 0.1
-    data = generate_map("SingleObstacleMap")
-    
-    print("data.shape")
-    print(data.shape)
-    planar_sdf = libplanar_sdf.PlanarSDF(origin, cell_size, data)
-
-    return planar_sdf
-
-
-if __name__ == '__main__':
-   
-    ## Planar sdf
-    map_name = "SingleObstacleMap"
-    planar_sdf = generate_2dsdf(map_name)
-    
     
