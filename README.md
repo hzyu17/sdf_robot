@@ -29,3 +29,4 @@ The gradient $\partial_x V$ can be obtained from the chain rule where each chain
 
 Below is an example of a planar quadrotor with multiple collision-checking points in a planar sdf with one obstacle.
 
+![Figure](example/example_quad2d.png)
