@@ -15,6 +15,7 @@ import libplanar_sdf
 from scipy.ndimage.morphology import distance_transform_edt as bwdist
 import numpy as np
 import plotly.graph_objects as go
+import matplotlib.pyplot as plt
 
 class PlanarMap:
     def __init__(self, origin, cell_size, map_width, map_height, map_name='defaultmap') -> None:
@@ -64,24 +65,27 @@ class PlanarMap:
     def get_field(self):
         return self.field
     
-    def draw_map(self):
-        colorscale = [[0, 'white'], [1, 'black']]
+    def draw_map(self):    
+        fig, ax = plt.subplots()
 
-        # Create a heatmap trace
-        env = go.Heatmap(z=self.map, colorscale=colorscale)
+        cmap = plt.cm.colors.ListedColormap(['white', 'black'])
 
-        # Create the figure
-        fig = go.Figure(data=[env])
+        # Create a heatmap
+        plt.imshow(self.map, cmap=cmap, interpolation='nearest', origin='lower',
+                   extent=[0, self.map_width*self.cell_size, 0, self.map_height*self.cell_size])
         
-        fig.update_layout(
-            xaxis=dict(title='X'),
-            yaxis=dict(title='Y'),
-            title='Single Obstacle Env',
-        )
-
-        fig.show()
+        plt.xlabel('X')
+        plt.ylabel('Y')
         
-        return fig
+        # num_rows, num_cols = binary_matrix.shape
+        plt.xlim([0, self.map_width * self.cell_size])
+        plt.ylim([0, self.map_height * self.cell_size])
+        
+        plt.title('Obstacle environment')
+        
+        plt.show()
+        
+        return ax
 
     
 def generate_planarmap(map_name, cell_size, save_map=False):
