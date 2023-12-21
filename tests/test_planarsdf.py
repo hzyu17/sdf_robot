@@ -3,7 +3,8 @@
 
 import sys
 import os
-current_dir = os.getcwd()
+
+current_dir = os.path.abspath(__file__)
 root_dir = os.path.abspath(os.path.join(current_dir, '..'))
 script_dir = os.path.abspath(os.path.join(root_dir, 'scripts'))
 
