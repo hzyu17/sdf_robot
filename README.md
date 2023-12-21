@@ -20,7 +20,8 @@ pytest
 ## Examples 
 For collision checking on a multi-body robot, a vector of collision checking points in different locations are considered in the workspace. Each collision checking point is forward transformed to the workspace. A signed distance to the obstacles is first computed elementwise, and then a hinge loss is applied to the signed distance. Finally, a norm weighted by $\Sigma_{\rm obs}$ represents the collision cost. 
 
-We define the forward chain as $\mathbf{h}(S(F(X_t)))$, $\mathbf{h}(\cdot)$ is a hinge loss function, $S(\cdot)$ is the signed distance to the obstacles, $F(\cdot)$ represents the forward kinematics for the collision-checking positions, and $\Sigma_{obs}$ is a weight applied on the hinge losses, and the collision cost function is defined as $V(X_t)=\| \mathbf{h}(S(F(X_t))) \|_{\Sigma_{\rm obs}}^2.$
+We define the forward chain as $\mathbf{h}(S(F(X_t)))$, $\mathbf{h}(\cdot)$ is a hinge loss function, $S(\cdot)$ is the signed distance to the obstacles, $F(\cdot)$ represents the forward kinematics for the collision-checking positions, and $\Sigma_{obs}$ is a weight applied on the hinge losses, and the collision cost function is defined as 
+$$ V(X_t) = \left \lVert \mathbf{h}(S(F(X_t))) \right\rVert_{\Sigma_{\text{obs}}}^2. $$
 
 The gradient $\partial_x V$ can be obtained from the chain rule where each chain has a predefined closed form or can be computed using finite difference. 
 
