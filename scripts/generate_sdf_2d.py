@@ -90,15 +90,15 @@ class PlanarMap:
     
 def generate_planarmap(map_name, cell_size, save_map=False):
     origin = np.array([0.0, 0.0], dtype=np.float64)
-    width = 500
-    height = 500
+    width = 400
+    height = 300
     
     # map range: (x: [0.0, 50.0]; y: [0.0, 50.0])
     m = PlanarMap(origin, cell_size, width, height)
     
     if map_name == "SingleObstacleMap":
-        # obstacle range: (x: [22.0, 32.0]; y: [10.0, 16.0])
-        m.add_box_xy(22.0, 10.0, [10.0, 6.0])
+        # obstacle range: (x: [10.0, 20.0]; y: [10.0, 16.0])
+        m.add_box_xy(10.0, 10.0, [10.0, 6.0])
         
     if save_map:
         m.save_map(planarmap_dir + '/' + map_name + '.csv', 
