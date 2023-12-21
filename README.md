@@ -12,5 +12,10 @@ mkdir build && cd build
 cmake ..
 make
 ```
+## Tests
+```
+cd tests
+pytest
+```
 ## Examples
 
