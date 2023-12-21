@@ -17,7 +17,11 @@ from collision_costs_2d import *
 import numpy as np
 
 def test_signed_distance():
-    sdf_2d = generate_2dsdf("SingleObstacleMap", False)
+
+    sdf_2d, planarmap = generate_2dsdf("SingleObstacleMap", False)
+    
+    ax = planarmap.draw_map()
+    
     # obstacle range: (x: [22.0, 32.0]; y: [10.0, 16.0])
     
     # ========== test point: the origin ([0, 0]) ========== 

@@ -14,6 +14,7 @@ sys.path.append(build_dir)
 import libplanar_sdf
 from scipy.ndimage.morphology import distance_transform_edt as bwdist
 import numpy as np
+import plotly.graph_objects as go
 
 class PlanarMap:
     def __init__(self, origin, cell_size, map_width, map_height, map_name='defaultmap') -> None:
@@ -63,8 +64,27 @@ class PlanarMap:
     def get_field(self):
         return self.field
     
+    def draw_map(self):
+        colorscale = [[0, 'white'], [1, 'black']]
+
+        # Create a heatmap trace
+        env = go.Heatmap(z=self.map, colorscale=colorscale)
+
+        # Create the figure
+        fig = go.Figure(data=[env])
+        
+        fig.update_layout(
+            xaxis=dict(title='X'),
+            yaxis=dict(title='Y'),
+            title='Single Obstacle Env',
+        )
+
+        fig.show()
+        
+        return fig
+
     
-def generate_field(map_name, cell_size, save_map=False):
+def generate_planarmap(map_name, cell_size, save_map=False):
     origin = np.array([0.0, 0.0], dtype=np.float64)
     width = 500
     height = 500
@@ -80,14 +100,15 @@ def generate_field(map_name, cell_size, save_map=False):
         m.save_map(planarmap_dir + '/' + map_name + '.csv', 
                    planarmap_dir + '/' + map_name + '_field' + '.csv')
     
-    return m.get_field()
+    return m
 
 
 def generate_2dsdf(map_name="SingleObstacleMap", savemap=False):
     origin = np.array([0.0, 0.0], dtype=np.float64)
     cell_size = 0.1
-    field_data = generate_field(map_name, cell_size, savemap)
+    planarmap = generate_planarmap(map_name, cell_size, savemap)
+    field_data = planarmap.get_field()
     
     planar_sdf = libplanar_sdf.PlanarSDF(origin, cell_size, field_data)
 
-    return planar_sdf
+    return planar_sdf, planarmap
