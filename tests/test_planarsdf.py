@@ -18,15 +18,15 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 def test_signed_distance():
-    # obstacle range: (x: [22.0, 32.0]; y: [10.0, 16.0])
+    # obstacle range: (x: [10.0, 20.0]; y: [10.0, 16.0])
     sdf_2d, planarmap = generate_2dsdf("SingleObstacleMap", False)
     
-    fig, ax = planarmap.draw_map()
-    plt.show()
+    # fig, ax = planarmap.draw_map()
+    # plt.show()
     
     # ========== test point: the origin ([0, 0]) ========== 
-    nearest_dist = np.sqrt(220.0*220.0+100.0*100.0)*0.1
-    atan_gradient = np.arctan2(-10.0, -22.0)
+    nearest_dist = np.sqrt(100.0*100.0+100.0*100.0)*0.1
+    atan_gradient = np.arctan2(-10.0, -10.0)
     
     t_pt1 = np.zeros(2, dtype=np.float64)
     dist = sdf_2d.getSignedDistance(t_pt1)
@@ -34,7 +34,6 @@ def test_signed_distance():
     
     assert(abs(dist - nearest_dist) < 1e-6)
     assert(abs(np.arctan2(gradient_pt1[1], gradient_pt1[0]) - atan_gradient) < 1e-2)
-    
     
     # ========== test sdf distance and gradient ========== 
     eps_obs = 0.2
@@ -49,7 +48,7 @@ def test_signed_distance():
     assert(np.linalg.norm(g1-dist_nearest1) < 1e-6)
     
     # ========== test hinge loss and gradient ==========     
-    t_pt2 = np.array([23.0, 9.8], dtype=np.float64)
+    t_pt2 = np.array([13.0, 9.8], dtype=np.float64)
     dist_nearest2 = slope * 0.2
     g_nearest2 = -np.array([0, -1], dtype=np.float64)*slope
     
