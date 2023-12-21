@@ -87,6 +87,10 @@ def draw_quad_balls(x, L, H, fig, ax, rgb='b'):
         
     plt.xlim([10.0, 30.0])
     plt.ylim([5.0, 20.0])
+    
+    plt.xlabel('X')
+    plt.ylabel('Z')
+    
     plt.show()
     
     return fig, ax
