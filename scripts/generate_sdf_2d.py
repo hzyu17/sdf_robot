@@ -71,7 +71,7 @@ class PlanarMap:
         cmap = plt.cm.colors.ListedColormap(['white', 'black'])
 
         # Create a heatmap
-        plt.imshow(self.map, cmap=cmap, interpolation='nearest', origin='lower',
+        im = ax.imshow(self.map, cmap=cmap, interpolation='nearest', origin='lower',
                    extent=[0, self.map_width*self.cell_size, 0, self.map_height*self.cell_size])
         
         plt.xlabel('X')
@@ -85,7 +85,7 @@ class PlanarMap:
         
         plt.show()
         
-        return ax
+        return fig, ax
 
     
 def generate_planarmap(map_name, cell_size, save_map=False):
