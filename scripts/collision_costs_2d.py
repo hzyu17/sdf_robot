@@ -1,6 +1,13 @@
 ## Collision costs definitions and their derivatives using a SDF
 # Hongzhe Yu, 12/19/2023
 
+import sys
+import os
+file_path = os.path.abspath(__file__)
+current_dir = os.path.dirname(file_path)
+
+sys.path.append(current_dir)
+
 import numpy as np
 import plotly.graph_objects as go
 from generate_sdf_2d import *

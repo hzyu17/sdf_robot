@@ -3,19 +3,26 @@
 
 import sys
 import os
-current_dir = os.getcwd()
-root_dir = os.path.abspath(os.path.join(current_dir, '..'))
+
+current_path = os.path.abspath(__file__)
+current_dir = os.path.dirname(current_path)
+root_dir = os.path.dirname(current_dir)
 script_dir = os.path.abspath(os.path.join(root_dir, 'scripts'))
 
 sys.path.append(script_dir)
 
+
 from generate_sdf_2d import *
 from collision_costs_2d import *
 import numpy as np
+import matplotlib.pyplot as plt
 
 def test_signed_distance():
-    sdf_2d = generate_2dsdf("SingleObstacleMap", False)
     # obstacle range: (x: [22.0, 32.0]; y: [10.0, 16.0])
+    sdf_2d, planarmap = generate_2dsdf("SingleObstacleMap", False)
+    
+    fig, ax = planarmap.draw_map()
+    plt.show()
     
     # ========== test point: the origin ([0, 0]) ========== 
     nearest_dist = np.sqrt(220.0*220.0+100.0*100.0)*0.1

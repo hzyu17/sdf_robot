@@ -3,7 +3,8 @@
 
 import sys
 import os
-current_dir = os.getcwd()
+file_path = os.path.abspath(__file__)
+current_dir = os.path.dirname(file_path)
 root_dir = os.path.abspath(os.path.join(current_dir, '..'))
 build_dir = os.path.abspath(os.path.join(root_dir, 'build'))
 planarmap_dir = os.path.abspath(os.path.join(os.path.join(root_dir, 'map'),'planar'))
@@ -13,6 +14,8 @@ sys.path.append(build_dir)
 import libplanar_sdf
 from scipy.ndimage.morphology import distance_transform_edt as bwdist
 import numpy as np
+import plotly.graph_objects as go
+import matplotlib.pyplot as plt
 
 class PlanarMap:
     def __init__(self, origin, cell_size, map_width, map_height, map_name='defaultmap') -> None:
@@ -62,8 +65,30 @@ class PlanarMap:
     def get_field(self):
         return self.field
     
+    def draw_map(self):    
+        fig, ax = plt.subplots()
+
+        cmap = plt.cm.colors.ListedColormap(['white', 'black'])
+
+        # Create a heatmap
+        im = ax.imshow(self.map, cmap=cmap, interpolation='nearest', origin='lower',
+                   extent=[0, self.map_width*self.cell_size, 0, self.map_height*self.cell_size])
+        
+        plt.xlabel('X')
+        plt.ylabel('Y')
+        
+        # num_rows, num_cols = binary_matrix.shape
+        plt.xlim([0, self.map_width * self.cell_size])
+        plt.ylim([0, self.map_height * self.cell_size])
+        
+        plt.title('Obstacle environment')
+        
+        # plt.show()
+        
+        return fig, ax
+
     
-def generate_field(map_name, cell_size, save_map=False):
+def generate_planarmap(map_name, cell_size, save_map=False):
     origin = np.array([0.0, 0.0], dtype=np.float64)
     width = 500
     height = 500
@@ -79,14 +104,15 @@ def generate_field(map_name, cell_size, save_map=False):
         m.save_map(planarmap_dir + '/' + map_name + '.csv', 
                    planarmap_dir + '/' + map_name + '_field' + '.csv')
     
-    return m.get_field()
+    return m
 
 
 def generate_2dsdf(map_name="SingleObstacleMap", savemap=False):
     origin = np.array([0.0, 0.0], dtype=np.float64)
     cell_size = 0.1
-    field_data = generate_field(map_name, cell_size, savemap)
+    planarmap = generate_planarmap(map_name, cell_size, savemap)
+    field_data = planarmap.get_field()
     
     planar_sdf = libplanar_sdf.PlanarSDF(origin, cell_size, field_data)
 
-    return planar_sdf
+    return planar_sdf, planarmap
