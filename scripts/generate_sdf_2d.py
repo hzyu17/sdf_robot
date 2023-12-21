@@ -83,7 +83,7 @@ class PlanarMap:
         
         plt.title('Obstacle environment')
         
-        plt.show()
+        # plt.show()
         
         return fig, ax
 

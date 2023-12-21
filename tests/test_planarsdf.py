@@ -15,12 +15,15 @@ sys.path.append(script_dir)
 from generate_sdf_2d import *
 from collision_costs_2d import *
 import numpy as np
+import matplotlib.pyplot as plt
 
 def test_signed_distance():
     # obstacle range: (x: [22.0, 32.0]; y: [10.0, 16.0])
     sdf_2d, planarmap = generate_2dsdf("SingleObstacleMap", False)
     
     fig, ax = planarmap.draw_map()
+    plt.show()
+    
     # ========== test point: the origin ([0, 0]) ========== 
     nearest_dist = np.sqrt(220.0*220.0+100.0*100.0)*0.1
     atan_gradient = np.arctan2(-10.0, -22.0)
