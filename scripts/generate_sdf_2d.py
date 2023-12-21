@@ -12,7 +12,7 @@ planarmap_dir = os.path.abspath(os.path.join(os.path.join(root_dir, 'map'),'plan
 sys.path.append(build_dir)
 
 import libplanar_sdf
-from scipy.ndimage.morphology import distance_transform_edt as bwdist
+from scipy.ndimage import distance_transform_edt as bwdist
 import numpy as np
 import plotly.graph_objects as go
 import matplotlib.pyplot as plt
