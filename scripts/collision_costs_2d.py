@@ -1,9 +1,11 @@
 ## Collision costs definitions and their derivatives using a SDF
 # Hongzhe Yu, 12/19/2023
 
-current_dir = os.path.abspath(__file__)
 import sys
 import os
+file_path = os.path.abspath(__file__)
+current_dir = os.path.dirname(file_path)
+
 sys.path.append(current_dir)
 
 import numpy as np

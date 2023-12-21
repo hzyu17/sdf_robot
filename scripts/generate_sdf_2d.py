@@ -3,7 +3,8 @@
 
 import sys
 import os
-current_dir = os.path.abspath(__file__)
+file_path = os.path.abspath(__file__)
+current_dir = os.path.dirname(file_path)
 root_dir = os.path.abspath(os.path.join(current_dir, '..'))
 build_dir = os.path.abspath(os.path.join(root_dir, 'build'))
 planarmap_dir = os.path.abspath(os.path.join(os.path.join(root_dir, 'map'),'planar'))

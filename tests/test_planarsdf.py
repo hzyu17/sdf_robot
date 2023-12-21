@@ -4,11 +4,13 @@
 import sys
 import os
 
-current_dir = os.path.abspath(__file__)
-root_dir = os.path.abspath(os.path.join(current_dir, '..'))
+current_path = os.path.abspath(__file__)
+current_dir = os.path.dirname(current_path)
+root_dir = os.path.dirname(current_dir)
 script_dir = os.path.abspath(os.path.join(root_dir, 'scripts'))
 
 sys.path.append(script_dir)
+
 
 from generate_sdf_2d import *
 from collision_costs_2d import *
