@@ -9,9 +9,13 @@ class Sdf2D():
         self.width = width
         self.height = height
         self.cell_size = cell_size
-        self.field = jnp.zeros((height, width))
+        self.field = jnp.zeros((height, width), dtype=jnp.float64)
         
     def signed_distance(self, point):
+        index = self.point2index(point)
+        return self.signed_distance(index)
+    
+    def gradient_signed_distance(self, point):
         index = self.point2index(point)
         return self.signed_distance(index)
         
@@ -20,6 +24,9 @@ class Sdf2D():
         index[0] = (point[0] - self.origin[0]) / self.cell_size
         index[1] = (point[1] - self.origin[1]) / self.cell_size
         return index
+    
+    def signed_distance(self, index):
+        return self.field[index[0], index[0]]
 
 # def _point2index(origin, cell_size, width, height, point):
     
