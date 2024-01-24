@@ -87,14 +87,17 @@ class map2d:
         
         return fig, ax
     
-    def cell_size(self):
+    def get_cell_size(self):
         return self._cell_size
     
-    def width(self):
-        return self.width
+    def get_width(self):
+        return self.map_width
     
-    def height(self):
-        return self.height
+    def get_height(self):
+        return self.map_height
+    
+    def get_origin(self):
+        return self.origin
 
     
 def generate_map(map_name, cell_size, save_map=False):
@@ -112,6 +115,16 @@ def generate_map(map_name, cell_size, save_map=False):
     if save_map:
         m.save_map(map_dir + '/' + map_name + '.csv', 
                    map_dir + '/' + map_name + '_field' + '.csv')
+    
+    ## ======== print map information ========
+    print("Map origin")
+    print(m.get_origin())
+    print("Map cell size")
+    print(m.get_cell_size())
+    print("Map width")
+    print(m.get_width())
+    print("Map height")
+    print(m.get_height())
     
     return m
 
