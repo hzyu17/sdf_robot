@@ -9,7 +9,6 @@ current_dir = os.path.dirname(file_path)
 sys.path.append(current_dir)
 
 import numpy as np
-import plotly.graph_objects as go
 from generate_sdf_2d import *
 
 # hinge(dist), (\par h)/(\par dist)
@@ -29,19 +28,20 @@ def hinge_sdf_loss_gradient(pt, sdf_2d, eps_obs, slope=1):
 def collision_lost_gradient(sig_obs, vec_pts, sdf_2d, eps_obs, slope=1):
     n_pts, pt_dim = vec_pts.shape
     vec_hinge = np.zeros(n_pts, dtype=np.float32)
-    g_vec_hinge = np.zeros((n_pts, pt_dim), dtype=np.float32)
-    g_vec_pts = np.zeros(pt_dim, dtype=np.float32)
+    # gradient of the hinge function w.r.t. the 
+    vec_grad_hinge_x = np.zeros((n_pts, pt_dim), dtype=np.float32)
+    vec_grad_collision_x = np.zeros(pt_dim, dtype=np.float32)
     
     for r in range(n_pts):
         pt = vec_pts[r]
         
         h, g_h_pt = hinge_sdf_loss_gradient(pt, sdf_2d, eps_obs, slope)
         vec_hinge[r] = h
-        g_vec_hinge[r] = g_h_pt
+        vec_grad_hinge_x[r] = g_h_pt
         
     Sig_obs = sig_obs * np.eye(n_pts, dtype=np.float32)
     collision_cost = vec_hinge.T @ Sig_obs @ vec_hinge
-    g_vec_pts = 2*Sig_obs@vec_hinge@g_vec_hinge
+    vec_grad_collision_x = 2*Sig_obs@vec_hinge@vec_grad_hinge_x
     
-    return collision_cost, g_vec_pts
+    return collision_cost, vec_grad_collision_x
     

@@ -16,35 +16,26 @@ import jax
 import numpy as np
 
 
-import jax
-import jax.numpy as np
-from jax import grad
+# Define a simple function
+def my_grad(x, y):
+    # Assume x is a scalar and convert it to an integer
+    x_int = int(x)
+    y_int = int(y)
+    # Define a matrix M
+    M = np.array([[1, 2], [3, 4]], dtype=np.float64)
+    # Return the corresponding element in the matrix
+    return np.array([M[x_int][y_int], M[y_int][x_int]])
 
-# Define a function that involves rounding and matrix indexing
-def my_function(x, matrix):
-    # Round to the nearest integer
-    rounded_index = jnp.round(x)
-    
-    # Convert to integer for indexing
-    index = jnp.int_(rounded_index)
-    
-    # Access the matrix element at the rounded index
-    y = matrix[index]
-    
-    return y
+# Compute the Hessian using jax.grad twice
+hessian_fn = jax.jacobian(my_grad)
 
-# Use JAX grad to compute the gradient
-grad_my_function = grad(my_function, argnums=0)  # Compute gradient with respect to the first argument (x)
+# Example usage
+x_val = 1.5  # Example scalar value
+y_val = 0.5
+hessian = hessian_fn(x_val, y_val)
 
-# Input values
-x = 3.14
-matrix = jnp.array([1.0, 2.0, 3.0, 4.0, 5.0])  # Replace this with your matrix
+print("Hessian:", hessian)
 
-# Compute the gradient
-gradient_value = grad_my_function(x, matrix)
-
-print("Input value:", x)
-print("Gradient:", gradient_value)
 
 # # 2d sdf
 # sdf_2d, map2d = generate_2dsdf("SingleObstacleMap")
