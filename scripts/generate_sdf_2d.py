@@ -24,8 +24,8 @@ class map2d:
         self._cell_size = cell_size
         self.map_width = map_width
         self.map_height = map_height
-        self._map = np.zeros((map_width, map_height), dtype=np.float64)
-        self._field = np.zeros((map_width, map_height), dtype=np.float64)
+        self._map = np.zeros((map_height, map_width), dtype=np.float64)
+        self._field = np.zeros((map_height, map_width), dtype=np.float64)
 
     def update_name(self, map_name):
         self.map_name = map_name
