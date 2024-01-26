@@ -74,7 +74,13 @@ public:
     if (point.x() < origin_.x() || point.x() > (origin_.x() + (field_cols_-1.0)*cell_size_) ||
         point.y() < origin_.y() || point.y() > (origin_.y() + (field_rows_-1.0)*cell_size_)) {
         
-      throw std::out_of_range("Index out of range");
+      // Convert the number to a string using std::to_string
+      std::string origin_x_Str = std::to_string(point.x());
+      std::string origin_y_Str = std::to_string(point.y());
+
+      // Concatenate the string and the number
+      std::string err_msg = "Index out of range. point.x: " + origin_x_Str + "; " + "point.y: " + origin_y_Str;
+      throw std::out_of_range(err_msg);
     }
 
     const double col = (point.x() - origin_.x()) / cell_size_;
