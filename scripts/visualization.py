@@ -29,7 +29,7 @@ if __name__ == '__main__':
     for i in range(X.shape[0]):
         for j in range(X.shape[1]):
             pt_i = np.array([[X[i, j]], [Y[i, j]]], dtype=np.float64)
-            hingeloss_grid[i, j], gradient_i = hinge_sdf_loss_gradient(pt_i, sdf_2d, eps_obs)
+            hingeloss_grid[i, j], gradient_i = hingesdfloss_gradient(pt_i, sdf_2d, eps_obs)
             hingeloss_gradient_x[i, j] = gradient_i[0]
             hingeloss_gradient_y[i, j] = gradient_i[1]
             
