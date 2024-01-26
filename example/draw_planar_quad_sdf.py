@@ -34,7 +34,7 @@ def vec_balls(x, L, n_balls, radius):
     
     return v_pts, v_g_states, v_radius
 
-def compute_pqud_patches(x, L, H, patch_color='b'):
+def compute_pqud_patches(x, L, H, n_balls, patch_color='b'):
     center_location = x[0:2]
     theta = x[2]
     
@@ -64,8 +64,7 @@ def compute_pqud_patches(x, L, H, patch_color='b'):
     r_arrow_z = center2 + (L-4*arrow_width)/2*np.sin(theta) + H/2*np.cos(theta)
     r_arrow = Arrow(r_arrow_x, r_arrow_z, -np.sin(theta), np.cos(theta), width=0.6, edgecolor='none', facecolor='green')
     
-    n_balls = 5
-    radius = L/7.0
+    radius = L / (n_balls+2.0)
     v_pts, _, v_radius = vec_balls(x, L, n_balls, radius)
     v_circles = []
     for i in range(n_balls):
@@ -74,8 +73,8 @@ def compute_pqud_patches(x, L, H, patch_color='b'):
     return rect, l_arrow, r_arrow, v_circles
 
 # @njit
-def draw_quad_balls(x, L, H, fig, ax, draw_ball=True, patch_color='b'):
-    rect, l_arrow, r_arrow, v_circles = compute_pqud_patches(x, L, H, patch_color)
+def draw_quad_balls(x, L, H, n_balls, fig, ax, draw_ball=True, patch_color='b'):
+    rect, l_arrow, r_arrow, v_circles = compute_pqud_patches(x, L, H, n_balls, patch_color)
     
     ax.add_patch(l_arrow)
     ax.add_patch(r_arrow)
@@ -91,12 +90,13 @@ def draw_quad_balls(x, L, H, fig, ax, draw_ball=True, patch_color='b'):
 if __name__ == '__main__':
     L = 5.0
     H = 0.35
+    n_balls = 5
     state = np.array([25.0, 15.0, np.pi/6, 0.0, 0.0, 0.0])
     sdf_2d, planarmap = generate_2dsdf("SingleObstacleMap", False)
 
     fig, ax = plt.subplots()
     
     fig, ax = planarmap.draw_map(fig, ax, plot=True)
-    fig, ax = draw_quad_balls(state, L, H, fig, ax, True, 'b')
+    fig, ax = draw_quad_balls(state, L, H, n_balls, fig, ax, True, 'b')
     
     fig.savefig(example_dir+"/example_quad2d.png", dpi=500, bbox_inches='tight')
