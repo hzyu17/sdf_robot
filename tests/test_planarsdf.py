@@ -20,10 +20,7 @@ import matplotlib.pyplot as plt
 def test_signed_distance():
     # obstacle range: (x: [10.0, 20.0]; y: [10.0, 16.0])
     sdf_2d, planarmap = generate_2dsdf("SingleObstacleMap", False)
-    
-    # fig, ax = planarmap.draw_map()
-    # plt.show()
-    
+        
     # ========== test point: the origin ([0, 0]) ========== 
     nearest_dist = np.sqrt(100.0*100.0+100.0*100.0)*0.1
     atan_gradient = np.arctan2(-10.0, -10.0)

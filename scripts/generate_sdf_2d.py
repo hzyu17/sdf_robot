@@ -65,13 +65,12 @@ class map2d:
     def get_field(self):
         return self._field
     
-    def draw_map(self):    
-        fig, ax = plt.subplots()
+    def draw_map(self, fig, ax, plot=True):    
 
         cmap = plt.cm.colors.ListedColormap(['white', 'black'])
 
         # Create a heatmap
-        im = ax.imshow(self._map, cmap=cmap, interpolation='nearest', origin='lower',
+        ax.imshow(self._map, cmap=cmap, interpolation='nearest', origin='lower',
                    extent=[0, self.map_width*self._cell_size, 0, self.map_height*self._cell_size])
         
         plt.xlabel('X')
@@ -83,7 +82,8 @@ class map2d:
         
         plt.title('Obstacle environment')
         
-        # plt.show()
+        if plot:
+            plt.show()
         
         return fig, ax
     
@@ -102,8 +102,8 @@ class map2d:
     
 def generate_map(map_name, cell_size, save_map=False):
     origin = np.array([0.0, 0.0], dtype=np.float64)
-    width = 400
-    height = 300
+    width = 500
+    height = 400
     
     # map range: (x: [0.0, 50.0]; y: [0.0, 50.0])
     m = map2d(origin, cell_size, width, height)
@@ -130,7 +130,7 @@ def generate_map(map_name, cell_size, save_map=False):
 
 
 def generate_2dsdf(map_name="SingleObstacleMap", savemap=False):
-    origin = np.array([0.0, 0.0], dtype=np.float64)
+    origin = np.array([-5.0, -5.0], dtype=np.float64)
     cell_size = 0.1
     map2d = generate_map(map_name, cell_size, savemap)
     field_data = map2d.get_field()

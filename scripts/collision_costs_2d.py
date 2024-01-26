@@ -20,6 +20,8 @@ def hinge_loss_gradient(dist, eps_obs, slope=1):
     
 # hinge(sdf(pt)), (\par h)/(\par pt)
 def hingesdfloss_gradient(pt, sdf_2d, eps_obs, slope=1):
+    # print("pt")
+    # print(pt)
     dist, g_sdf = sdf_2d.getSignedDistance(pt), sdf_2d.getGradient(pt)    
     h, g_h = hinge_loss_gradient(dist, eps_obs, slope)
     return h, g_h*g_sdf
