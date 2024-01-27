@@ -14,7 +14,6 @@ sys.path.append(build_dir)
 import libplanar_sdf
 from scipy.ndimage import distance_transform_edt as bwdist
 import numpy as np
-import plotly.graph_objects as go
 import matplotlib.pyplot as plt
 
 class map2d:
@@ -77,8 +76,8 @@ class map2d:
         plt.ylabel('Y')
         
         # num_rows, num_cols = binary_matrix.shape
-        plt.xlim([0, self.map_width * self._cell_size])
-        plt.ylim([0, self.map_height * self._cell_size])
+        plt.xlim([self.origin[0], self.origin[0] + self.map_width * self._cell_size])
+        plt.ylim([self.origin[1], self.origin[1] + self.map_height * self._cell_size])
         
         plt.title('Obstacle environment')
         
@@ -100,17 +99,13 @@ class map2d:
         return self.origin
 
     
-def generate_map(map_name, cell_size, save_map=False):
-    origin = np.array([0.0, 0.0], dtype=np.float64)
-    width = 500
-    height = 400
-    
+def generate_map(map_name, origin, cell_size, width, height, save_map=False):    
     # map range: (x: [0.0, 50.0]; y: [0.0, 50.0])
     m = map2d(origin, cell_size, width, height)
     
     if map_name == "SingleObstacleMap":
         # obstacle range: (x: [10.0, 20.0]; y: [10.0, 16.0])
-        m.add_box_xy(10.0, 10.0, [10.0, 6.0])
+        m.add_box_xy(10.0, 10.0, [8.0, 6.0])
         
     if save_map:
         m.save_map(map_dir + '/' + map_name + '.csv', 
@@ -130,9 +125,11 @@ def generate_map(map_name, cell_size, save_map=False):
 
 
 def generate_2dsdf(map_name="SingleObstacleMap", savemap=False):
-    origin = np.array([-5.0, -5.0], dtype=np.float64)
+    origin = np.array([-10.0, -15.0], dtype=np.float64)
     cell_size = 0.1
-    map2d = generate_map(map_name, cell_size, savemap)
+    width = 800
+    height = 800
+    map2d = generate_map(map_name, origin, cell_size, width, height, savemap)
     field_data = map2d.get_field()
     
     planar_sdf = libplanar_sdf.PlanarSDF(origin, cell_size, field_data)
