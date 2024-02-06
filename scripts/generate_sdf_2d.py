@@ -17,6 +17,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 class map2d:
+    """
+    Definition of a 2d map object. The object contains the field matrix, and a signed distance matrix.
+    Functionality includes adding obstacles, save and draw map.
+    """
     def __init__(self, origin, cell_size, map_width, map_height, map_name='defaultmap') -> None:
         self.map_name = map_name
         self.origin = origin
@@ -35,8 +39,8 @@ class map2d:
     def add_box_xy(self, xmin, ymin, shape):
         xmax = xmin + shape[0]
         ymax = ymin + shape[1]
-        xmin_indx, xmax_indx = int(xmin / self._cell_size), int(xmax / self._cell_size)
-        ymin_indx, ymax_indx = int(ymin / self._cell_size), int(ymax / self._cell_size)
+        xmin_indx, xmax_indx = int((xmin - self.origin[0]) / self._cell_size), int((xmax - self.origin[0]) / self._cell_size)
+        ymin_indx, ymax_indx = int((ymin - self.origin[1]) / self._cell_size), int((ymax - self.origin[1]) / self._cell_size)
         
         self._map[ymin_indx:ymax_indx, xmin_indx:xmax_indx] = 1.0
         
@@ -70,7 +74,8 @@ class map2d:
 
         # Create a heatmap
         ax.imshow(self._map, cmap=cmap, interpolation='nearest', origin='lower',
-                   extent=[0, self.map_width*self._cell_size, 0, self.map_height*self._cell_size])
+                   extent=[self.origin[0], self.origin[0] + self.map_width*self._cell_size, 
+                           self.origin[1], self.origin[1] + self.map_height*self._cell_size])
         
         plt.xlabel('X')
         plt.ylabel('Y')
@@ -99,12 +104,20 @@ class map2d:
         return self.origin
 
     
-def generate_map(map_name, origin, cell_size, width, height, save_map=False):    
-    # map range: (x: [0.0, 50.0]; y: [0.0, 50.0])
+def generate_map(map_name, save_map=False):    
+    """
+    Generate map object for given map name.
+    """
+    origin = np.array([-20.0, -20.0], dtype=np.float64)
+    cell_size = 0.1
+    width = 800
+    height = 800
+
+    # map range: (x: [-20.0, 60.0]; y: [-20.0, 60.0])
     m = map2d(origin, cell_size, width, height)
     
     if map_name == "SingleObstacleMap":
-        # obstacle range: (x: [10.0, 20.0]; y: [10.0, 16.0])
+        # obstacle range: (x: [10.0, 18.0]; y: [10.0, 16.0])
         m.add_box_xy(10.0, 10.0, [8.0, 6.0])
         
     if save_map:
@@ -125,13 +138,10 @@ def generate_map(map_name, origin, cell_size, width, height, save_map=False):
 
 
 def generate_2dsdf(map_name="SingleObstacleMap", savemap=False):
-    origin = np.array([-10.0, -15.0], dtype=np.float64)
-    cell_size = 0.1
-    width = 800
-    height = 800
-    map2d = generate_map(map_name, origin, cell_size, width, height, savemap)
-    field_data = map2d.get_field()
     
+    map2d = generate_map(map_name, savemap)
+    field_data = map2d.get_field()
+    origin, cell_size = map2d.get_origin(), map2d.get_cell_size()
     planar_sdf = libplanar_sdf.PlanarSDF(origin, cell_size, field_data)
 
     return planar_sdf, map2d
